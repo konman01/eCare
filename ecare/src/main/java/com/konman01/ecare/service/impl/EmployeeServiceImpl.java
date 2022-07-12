@@ -1,6 +1,10 @@
 package com.konman01.ecare.service.impl;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.stereotype.Service;
 
@@ -25,6 +29,17 @@ public class EmployeeServiceImpl implements EmployeeService{
 		List<Employee> employees = employeeRepository.findAll();
 		
 		return employees;
+	}
+
+	// Service to get the list of Employees based on title
+	@Override
+	public List<Employee> getAllEmployeeBasedOnTitle(String title, HttpServletRequest req, HttpServletResponse res) {
+		
+		List<Employee> employees = employeeRepository.findAll();
+		
+		List<Employee> employeesOnTitle = employees.stream().filter(obj -> obj.getTitle().equals(title)).collect(Collectors.toList());
+		
+		return employeesOnTitle;
 	}
 
 	
