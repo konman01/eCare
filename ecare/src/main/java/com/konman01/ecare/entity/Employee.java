@@ -1,10 +1,13 @@
 package com.konman01.ecare.entity;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -14,19 +17,23 @@ public class Employee {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	int id;
+	private int id;
 	
 	@Column(name = "first_name")
-	String firstName;
+	private String firstName;
 	
 	@Column(name = "last_name")
-	String lastName;
+	private String lastName;
 	
 	@Column(name = "email")
-	String email;
+	private String email;
 	
 	@Column(name = "title")
-	String title;
+	private String title;
+	
+	@OneToOne(cascade = {CascadeType.REFRESH,CascadeType.REMOVE, CascadeType.PERSIST,CascadeType.MERGE})
+	@JoinColumn(name = "contact_detail_id")
+	private ContactDetail contactDetail;
 
 	public Employee(String firstName, String lastName, String email, String title) {
 		this.firstName = firstName;
@@ -70,9 +77,17 @@ public class Employee {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+	
+	public int getId() {
+		return id;
+	}
 
-	public void setId(int id) {
-		this.id = id;
+	public ContactDetail getContactDetail() {
+		return contactDetail;
+	}
+
+	public void setContactDetail(ContactDetail contactDetail) {
+		this.contactDetail = contactDetail;
 	}
 
 	@Override
@@ -80,9 +95,5 @@ public class Employee {
 		return "Employee [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email
 				+ ", title=" + title + "]";
 	}
-	
-	
-	
-	
 	
 }
